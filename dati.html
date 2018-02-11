@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #baidu {
+            width: 100%;
+            height: 800px;
+
+        }
+    </style>
+</head>
+
+<body>
+    <select name="" id="select">
+
+        <option value="million">百万英雄</option>
+        <option value="top">冲顶大会</option>
+        <option value="cheese">芝士超人</option>
+        <option value="huajiao">百万赢家</option>
+
+    </select>
+    <section>
+        <header>题目</header>
+        <p id="title"></p>
+    </section>
+    <section>
+        <header>结果</header>
+        <p id="options"></p>
+    </section>
+    <section>
+        <header>结果</header>
+        <p id="result"></p>
+    </section>
+    <!-- <iframe src="http://www.baidu.com" id="baidu" frameborder="0"></iframe> -->
+    <article id="app">
+
+    </article>
+</body>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script>
+    // setInterval(function() {
+    //     var xhr = new XMLHttpRequest()
+    //     xhr.open('get', 'localhost:3001', true);
+    //     xhr.onload = function(e) {
+    //         if (this.status == 200 || this.status == 304) {
+    //             console.log(this.responseText);
+    //         }
+    //     }
+    //     xhr.send()
+    //     console.log('11')
+    // }, 2000)
+    var question_title = '答题开始'
+    var question_options = ['重量', '体积']
+
+    setInterval(function () {
+        $.ajax({
+            url: 'http://localhost:3001',
+            data: {
+                option: select.value
+            }
+        }).then(function (data) {
+            console.log(data);
+            var question = data.data
+            title.innerHTML = question.title
+            var qt = question.title
+            options.innerHTML = question.options.reduce(function (sum, option) {
+                return sum + `<span class="rec">${option.score}</span>` +
+                    `<span class="option">${option.title}</span>`
+            }, '')
+
+            var arr = ['a', 'b', 'c']
+            question_options = question.options.map(function (x) {
+                return x.title
+            })
+            // options.innerHTML=question.options[0].title
+            result.innerHTML = arr[question.correct]
+            var qo = JSON.stringify(question_options)
+            $.ajax({
+                type: 'get',
+                url: 'http://localhost:3001',
+                data: {
+                    title: qt,
+                    question_options: qo
+                }
+            }).then(function (data) {
+                // console.log(data);
+                app.innerHTML = data
+                // result.innerHTML = data
+
+            })
+            // console.log(options3);
+            // baidu.src='http://www.baidu.com/s?wd='+question.title
+            // console.log(JSON.parse(data.slice(9)))
+            // document.write(data)
+        })
+        console.log(question_title);
+
+    }, 2000)
+</script>
+
+</html>
