@@ -1,6 +1,6 @@
 var Koa = require('koa');
 // var fetch = require('node-fetch');
-
+var cors=require('koa2-cors')
 const axios = require('axios');
 
 const app = new Koa();
@@ -66,7 +66,7 @@ app.use(async ctx => {
         
         console.log(reg);
         // console.log(reg.test('asd'));
-        response.data=response.data.replace(reg,'$1')
+        response.data=response.data.replace(reg,'<span class="highlight">$1asd</span>')
         ctx.body = response.data;
       },
       err => {
